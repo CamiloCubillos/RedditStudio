@@ -62,8 +62,8 @@ class App:
                                    image=self.remove_bg, command=self.remove_story_COMMAND)
         self.remove_story.pack(pady=(10, 10))
 
-        self.generate_media = Button(self.rframe, width=20, height=1,
-                                     text="Generar Audios", borderwidth=5, command=self.generate_media_COMMAND)
+        self.generate_media = Button(self.rframe, width=20, height=1, bg="#43afde",
+                                     text="Generar Archivos Media", command=self.generate_media_COMMAND)
         self.generate_media.pack(pady=(35, 0))
 
     def check_inputs(self):
