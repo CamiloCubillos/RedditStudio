@@ -112,7 +112,7 @@ class App:
                 # Generate a .txt with all the stories and autors
                 print(f"[!] Generating text files for {story['autor']}...")
                 with codecs.open(f'{proj_folder}/stories.txt', "a", "utf-8") as output:
-                    story_log = f"{story['autor']}\n{spoker.trans_text}\n--------------------------------------\n"
+                    story_log = f"{story['autor']}\n{spoker.trans_text}\n..."
                     output.write(story_log)
                     i += 1
 
