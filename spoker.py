@@ -9,8 +9,7 @@ class Spoker:
         self.trans_text = None
         self.audio = None
         self.filename = "gtts.wav"
-        #self.speech_date = 1.10
-        self.speech_date = 2.00
+        self.speech_rate = 1.10
 
     def speak(self):
         translator = GoogleTranslator(source="en", target="es")
@@ -21,5 +20,5 @@ class Spoker:
         self.speak()
         self.audio.save(f"{self.filename}_TEMP.mp3")
         os.system(
-            f"ffmpeg -i {self.filename}_TEMP.mp3 -filter:a atempo={self.speech_date} {self.filename}.mp3 -y")
+            f"ffmpeg -i {self.filename}_TEMP.mp3 -filter:a atempo={self.speech_rate} {self.filename}.mp3 -y")
         os.remove(f"{self.filename}_TEMP.mp3")
