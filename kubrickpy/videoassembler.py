@@ -1,6 +1,6 @@
 import os
 import multiprocessing
-from moviepy.editor import ImageClip, AudioFileClip, CompositeAudioClip, concatenate
+from moviepy.editor import ImageClip, AudioFileClip, CompositeAudioClip, VideoFileClip, concatenate, vfx
 
 
 class VideoAssembler:
@@ -12,7 +12,8 @@ class VideoAssembler:
     def assemble(self):
         clips = []
         for autor in self.autors:
-            audio_file = AudioFileClip(f"{self.wd}/{autor}.mp3")
+            audio_file = AudioFileClip(
+                f"{self.wd}/{autor}.mp3")
             image_clip = ImageClip(
                 f"{self.wd}/kubrickpy_images/{autor}.png").set_duration(audio_file.duration)
             video_clip = concatenate([image_clip], method="compose")

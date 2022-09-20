@@ -1,9 +1,10 @@
+import codecs
+import os
+import shutil
 from parser import Parser
 from spoker import Spoker
 from tkinter import *
 from tkinter import messagebox
-import codecs
-import os
 
 
 class App:
@@ -98,6 +99,9 @@ class App:
         if inputs_status == True:
             # Create project folder
             proj_folder = self.name_entry.get()
+            if os.path.isdir(proj_folder):
+                # Clean previous session data if exists
+                shutil.rmtree(proj_folder)
             os.system(f"mkdir {proj_folder}")
 
             # Create project media
@@ -109,9 +113,10 @@ class App:
                 spoker.src_text = story['story']
                 spoker.filename = f"{proj_folder}/{i}_{story['autor']}"
                 spoker.save_mp3()
+
                 # Generate a .txt with all the stories and autors
                 print(f"[!] Generating text files for {story['autor']}...")
-                with codecs.open(f'{proj_folder}/stories.txt', "a", "utf-8") as output:
+                with codecs.open(f'{proj_folder}/stories.txt', 'a', "utf-8") as output:
                     story_log = f"{story['autor']}\n{spoker.trans_text}\n..."
                     output.write(story_log)
                     i += 1

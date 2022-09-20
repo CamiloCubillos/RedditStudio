@@ -1,3 +1,4 @@
+import os
 from deep_translator import GoogleTranslator
 from gtts import gTTS
 
@@ -7,7 +8,9 @@ class Spoker:
         self.src_text = src_text
         self.trans_text = None
         self.audio = None
-        self.filename = "gtts.mp3"
+        self.filename = "gtts.wav"
+        #self.speech_date = 1.10
+        self.speech_date = 2.00
 
     def speak(self):
         translator = GoogleTranslator(source="en", target="es")
@@ -16,4 +19,7 @@ class Spoker:
 
     def save_mp3(self):
         self.speak()
-        self.audio.save(f"{self.filename}.mp3")
+        self.audio.save(f"{self.filename}_TEMP.mp3")
+        os.system(
+            f"ffmpeg -i {self.filename}_TEMP.mp3 -filter:a atempo={self.speech_date} {self.filename}.mp3 -y")
+        os.remove(f"{self.filename}_TEMP.mp3")
