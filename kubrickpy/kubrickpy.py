@@ -60,7 +60,8 @@ def main(argv):
     for story in stories:
         autor_layer.TextItem.contents = story["autor"]
         story_layer.TextItem.contents = story["story"]
-        MoveLayerTo(footer_layer, 180, story_layer.bounds[3] + 100)
+        # Constant values of 105 and 50 for (1280x720) res
+        MoveLayerTo(footer_layer, 105, story_layer.bounds[3] + 50)
         image = f"{os.getcwd()}\\{out_folder}\\{i}_{story['autor']}.png"
         doc.Export(ExportIn=image, ExportAs=2, Options=options)
         i += 1
