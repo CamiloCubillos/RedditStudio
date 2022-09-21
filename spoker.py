@@ -9,7 +9,7 @@ class Spoker:
         self.trans_text = None
         self.audio = None
         self.filename = "gtts.wav"
-        self.speech_rate = 1.10
+        self.speech_rate = 1.20
 
     def speak(self):
         translator = GoogleTranslator(source="en", target="es")
