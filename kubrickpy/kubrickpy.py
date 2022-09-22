@@ -16,8 +16,7 @@ def main(argv):
     print("[+] Opening PS file...")
 
     psApp = win32com.client.Dispatch("Photoshop.Application")
-    psApp.Open(
-        r"C:\Users\ccubi\Documents\RedditStudio\RedditStudio\kubrickpy\template_test.psd")
+    psApp.Open(f"{os.getcwd()}/kubrickpy/template_test.psd")
     doc = psApp.Application.ActiveDocument
 
     options = win32com.client.Dispatch('Photoshop.ExportOptionsSaveForWeb')
@@ -55,7 +54,8 @@ def main(argv):
     print("[+] Generating images...")
 
     out_folder = f"{src_folder}\kubrickpy_images"
-    os.system(f"mkdir {out_folder}")
+    if not os.path.isdir(out_folder):
+        os.mkdir(out_folder)
     i = 1
     for story in stories:
         autor_layer.TextItem.contents = story["autor"]
