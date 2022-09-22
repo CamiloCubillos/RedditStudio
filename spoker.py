@@ -20,5 +20,5 @@ class Spoker:
         self.speak()
         self.audio.save(f"{self.filename}_TEMP.mp3")
         os.system(
-            f"ffmpeg -i {self.filename}_TEMP.mp3 -filter:a atempo={self.speech_rate} {self.filename}.mp3 -y")
+            f"ffmpeg -i {self.filename}_TEMP.mp3 -filter:a atempo={self.speech_rate} {self.filename}.wav -y")
         os.remove(f"{self.filename}_TEMP.mp3")
