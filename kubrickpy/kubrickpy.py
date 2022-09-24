@@ -39,13 +39,13 @@ def main(argv):
         if opt in ("-s"):
             src_folder = arg
 
-    # Gathering data from 'stories.txt' of current project
+    # Gathering data from 'stories_data.txt' of current project
 
-    raw_stories = codecs.open(f"{src_folder}/stories.txt",
+    raw_stories = codecs.open(f"{src_folder}/stories_data.txt",
                               "r", "utf-8").read()
     stories = []
 
-    for story in raw_stories.split("...")[0:-1]:
+    for story in raw_stories.split("|-|-|")[0:-1]:
         data = story.split("\n")
         stories.append({"autor": data[0], "story": "".join(data[1:])})
 
@@ -62,7 +62,7 @@ def main(argv):
         story_layer.TextItem.contents = story["story"]
         # Constant values of 105 and 50 for (1280x720) res
         MoveLayerTo(footer_layer, 105, story_layer.bounds[3] + 50)
-        image = f"{os.getcwd()}\\{out_folder}\\{i}_{story['autor']}.png"
+        image = f"{os.getcwd()}\\{out_folder}\\{i}.png"
         doc.Export(ExportIn=image, ExportAs=2, Options=options)
         i += 1
 
@@ -70,8 +70,7 @@ def main(argv):
 
     print("[+] Generating video...")
 
-    autors = [f"{int(idx)+1}_{story['autor']}" for idx,
-              story in enumerate(stories)]
+    autors = [f"{i+1}" for i in range(len(stories))]
     vass = VideoAssembler(src_folder=src_folder, autors=autors)
     vass.assemble()
 

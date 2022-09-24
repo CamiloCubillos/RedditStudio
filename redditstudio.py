@@ -1,8 +1,8 @@
 import codecs
 import os
 import shutil
+from deep_translator import GoogleTranslator
 from parser import Parser
-from spoker import Spoker
 from tkinter import *
 from tkinter import messagebox
 
@@ -102,24 +102,28 @@ class App:
             if os.path.isdir(proj_folder):
                 # Clean previous session data if exists
                 shutil.rmtree(proj_folder)
-            os.system(f"mkdir {proj_folder}")
+            os.mkdir(proj_folder)
 
             # Create project media
-            spoker = Spoker("")
             i = 1
             for story in self.stories_collection:
-                # Generate audio files
-                print(f"[!] Generating audio files for {story['autor']}...")
-                spoker.src_text = story['story']
-                spoker.filename = f"{proj_folder}/{i}_{story['autor']}"
-                spoker.save_mp3()
+
+                # Translate story
+                translated_story = GoogleTranslator(
+                    source="en", target="es").translate(story['story'])
 
                 # Generate a .txt with all the stories and autors
-                print(f"[!] Generating text files for {story['autor']}...")
-                with codecs.open(f'{proj_folder}/stories.txt', 'a', "utf-8") as output:
-                    story_log = f"{story['autor']}\n{spoker.trans_text}\n..."
+                print(f"[!] Adding data of {story['autor']}...")
+                with codecs.open(f'{proj_folder}/stories_data.txt', 'a', "utf-8") as output:
+                    story_log = f"{story['autor']}\n{translated_story}\n|-|-|"
                     output.write(story_log)
-                    i += 1
+
+                # Generate a .txt to be used by Balabolka TTS
+                print(f"[!] Generating balabolka file for {story['autor']}...")
+                with codecs.open(f'{proj_folder}/{i}.txt', 'a', "utf-8") as balabolka_file:
+                    balabolka_file.write(translated_story)
+
+                i += 1
 
             # Clear session data
             self.stories_collection.clear()
