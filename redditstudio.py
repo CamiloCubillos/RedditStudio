@@ -1,7 +1,7 @@
 import codecs
 import os
 import shutil
-from deep_translator import GoogleTranslator
+import translators as ts
 from parser import Parser
 from spoker import Spoker
 from tkinter import *
@@ -115,8 +115,8 @@ class App:
             for story in self.stories_collection:
 
                 # Translate story
-                translated_story = GoogleTranslator(
-                    source="en", target="es").translate(story['story'])
+                translated_story = ts.bing(
+                    story['story'], from_language="en", to_language="es")
 
                 # Generate a .txt with all the stories and autors
                 print(f"[!] Adding data of {story['autor']}...")

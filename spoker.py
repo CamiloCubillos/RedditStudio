@@ -1,5 +1,4 @@
 import os
-from deep_translator import GoogleTranslator
 from gtts import gTTS
 
 
