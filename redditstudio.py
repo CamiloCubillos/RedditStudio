@@ -3,6 +3,7 @@ import os
 import shutil
 from deep_translator import GoogleTranslator
 from parser import Parser
+from spoker import Spoker
 from tkinter import *
 from tkinter import messagebox
 
@@ -13,6 +14,7 @@ class App:
 
         self.n_stories = 0
         self.stories_collection = []
+        self.using_gtts = IntVar()
 
         # --------------------------------------
         #               GUI SETUP
@@ -62,6 +64,10 @@ class App:
         self.remove_story = Button(self.rframe, borderwidth=0,
                                    image=self.remove_bg, command=self.remove_story_COMMAND)
         self.remove_story.pack(pady=(10, 10))
+
+        self.checkbox = Checkbutton(
+            self.rframe, text="Use gTTS", bg=self.bg_color, foreground="#15E100", variable=self.using_gtts)
+        self.checkbox.pack()
 
         self.generate_media = Button(self.rframe, width=20, height=1, bg="#43afde",
                                      text="Generar Archivos Media", command=self.generate_media_COMMAND)
@@ -118,11 +124,23 @@ class App:
                     story_log = f"{story['autor']}\n{translated_story}\n|-|-|"
                     output.write(story_log)
 
-                # Generate a .txt to be used by Balabolka TTS
-                print(f"[!] Generating balabolka file for {story['autor']}...")
-                with codecs.open(f'{proj_folder}/{i}.txt', 'a', "utf-8") as balabolka_file:
-                    balabolka_file.write(translated_story)
+                # Generate files for selected TTS
 
+                if self.using_gtts.get():
+                    # Generate .wav audios if 'gTTS' flag is on
+                    print("[!] USING GTTS")
+                    print(
+                        f"[!] Generating audio files for {story['autor']}...")
+                    spoker = Spoker(translated_story)
+                    spoker.filename = f"{proj_folder}/{i}"
+                    spoker.save_audio()
+                else:
+                    # Generate a .txt to be used by Balabolka TTS
+                    print("[!] USING BALABOKLA")
+                    print(
+                        f"[!] Generating balabolka file for {story['autor']}...")
+                    with codecs.open(f'{proj_folder}/{i}.txt', 'a', "utf-8") as balabolka_file:
+                        balabolka_file.write(translated_story)
                 i += 1
 
             # Clear session data
