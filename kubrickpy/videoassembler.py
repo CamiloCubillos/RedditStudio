@@ -1,7 +1,9 @@
 import os
 import multiprocessing
 from moviepy.editor import ImageClip, AudioFileClip, CompositeAudioClip, concatenate_videoclips
+from moviepy.audio.fx.all import audio_loop
 from moviepy.audio.fx.volumex import volumex
+from math import ceil
 
 
 class VideoAssembler:
@@ -37,8 +39,9 @@ class VideoAssembler:
         output = concatenate_videoclips(clips, method='compose')
 
         # Add background music to the video
-        bg_music = CompositeAudioClip(
-            [AudioFileClip("kubrickpy/music/happy_track.mp3")]).fx(volumex, 0.05).set_duration(output.duration)
+        bg_musicFile = AudioFileClip("kubrickpy/music/happy_track.mp3")
+        bg_music = audio_loop(
+            bg_musicFile, duration=output.duration).fx(volumex, 0.05)
         output.audio = CompositeAudioClip([output.audio, bg_music])
 
         # Render the video
